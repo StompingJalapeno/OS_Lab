@@ -35,6 +35,7 @@ const int STACK_FENCEPOST = 0xdedbeef;
 
 Thread::Thread(char *threadName, bool _has_dynamic_name /*=false*/) {
     has_dynamic_name = _has_dynamic_name;
+    start = clock();
     name = threadName;
     stackTop = NULL;
     stack = NULL;

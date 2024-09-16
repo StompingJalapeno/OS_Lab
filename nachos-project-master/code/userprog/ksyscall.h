@@ -15,11 +15,19 @@
 #include "synchconsole.h"
 #include "ksyscallhelper.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
-void SysHalt() { kernel->interrupt->Halt(); }
+void SysHalt() { 
+    clock_t stop = clock();
+    stop = stop - kernel->currentThread->start;
+    float duration = (float) stop/CLOCKS_PER_SEC;
+    printf("\nprocess duration : %f sec\n",duration);
+    kernel->interrupt->Halt(); 
+}
 
 int SysAdd(int op1, int op2) { return op1 + op2; }
-
+int SysMul(int op1, int op2) { return op1 * op2; }
 int SysReadNum() {
     readUntilBlank();
 
@@ -129,6 +137,13 @@ char* SysReadString(int length) {
 void SysPrintString(char* buffer, int length) {
     for (int i = 0; i < length; i++) {
         kernel->synchConsoleOut->PutChar(buffer[i]);
+    }
+}
+
+void SysPrintHash(char* buffer, int length) {
+    for (int i = 0; i < length; i++) {
+	if(buffer[i]==' ') kernel->synchConsoleOut->PutChar('#');
+	else kernel->synchConsoleOut->PutChar(buffer[i]);
     }
 }
 

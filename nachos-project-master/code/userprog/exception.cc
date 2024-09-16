@@ -154,6 +154,23 @@ void handle_SC_Add() {
     return move_program_counter();
 }
 
+void handle_SC_Mul() {
+    DEBUG(dbgSys, "Mul " << kernel->machine->ReadRegister(4) << " * "
+                         << kernel->machine->ReadRegister(5) << "\n");
+
+    /* Process SysAdd Systemcall*/
+    int result;
+    result = SysMul(
+        /* int op1 */ (int)kernel->machine->ReadRegister(4),
+        /* int op2 */ (int)kernel->machine->ReadRegister(5));
+
+    DEBUG(dbgSys, "Mul returning with " << result << "\n");
+    /* Prepare Result */
+    kernel->machine->WriteRegister(2, (int)result);
+
+    return move_program_counter();
+}
+
 void handle_SC_ReadNum() {
     int result = SysReadNum();
     kernel->machine->WriteRegister(2, result);
@@ -204,6 +221,15 @@ void handle_SC_PrintString() {
     char* buffer = stringUser2System(memPtr);
 
     SysPrintString(buffer, strlen(buffer));
+    delete[] buffer;
+    return move_program_counter();
+}
+
+void handle_SC_PrintHash() {
+    int memPtr = kernel->machine->ReadRegister(4);  // read address of C-string
+    char* buffer = stringUser2System(memPtr);
+
+    SysPrintHash(buffer, strlen(buffer));
     delete[] buffer;
     return move_program_counter();
 }
@@ -421,6 +447,8 @@ void ExceptionHandler(ExceptionType which) {
                     return handle_SC_Halt();
                 case SC_Add:
                     return handle_SC_Add();
+                case SC_Mul:
+                    return handle_SC_Mul();
                 case SC_ReadNum:
                     return handle_SC_ReadNum();
                 case SC_PrintNum:
@@ -435,6 +463,8 @@ void ExceptionHandler(ExceptionType which) {
                     return handle_SC_ReadString();
                 case SC_PrintString:
                     return handle_SC_PrintString();
+		case SC_PrintHash:
+		    return handle_SC_PrintHash();
                 case SC_CreateFile:
                     return handle_SC_CreateFile();
                 case SC_Open:
