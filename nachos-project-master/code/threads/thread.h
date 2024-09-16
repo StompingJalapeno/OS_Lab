@@ -43,7 +43,7 @@
 
 #include "machine.h"
 #include "addrspace.h"
-
+#include <time.h>
 // CPU register state to be saved on context switch.
 // The x86 needs to save only a few registers,
 // SPARC and MIPS needs to save 10 registers,
@@ -86,7 +86,7 @@ class Thread {
                                              // NOTE -- thread being deleted
                                              // must not be running when delete
                                              // is called
-
+    clock_t start;
     int processID;
     int parrentID;
     int exitStatus;

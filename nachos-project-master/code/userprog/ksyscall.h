@@ -15,8 +15,16 @@
 #include "synchconsole.h"
 #include "ksyscallhelper.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
-void SysHalt() { kernel->interrupt->Halt(); }
+void SysHalt() { 
+    clock_t stop = clock();
+    stop = stop - kernel->currentThread->start;
+    float duration = (float) stop/CLOCKS_PER_SEC;
+    printf("\nprocess duration : %f sec\n",duration);
+    kernel->interrupt->Halt(); 
+}
 
 int SysAdd(int op1, int op2) { return op1 + op2; }
 int SysMul(int op1, int op2) { return op1 * op2; }
