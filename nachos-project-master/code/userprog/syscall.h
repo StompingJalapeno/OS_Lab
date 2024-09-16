@@ -49,6 +49,7 @@
 #define SC_Signal 53
 #define SC_GetPid 54
 #define SC_Mul 55
+#define SC_PrintHash 56
 
 #ifndef IN_ASM
 
@@ -86,6 +87,8 @@ int RandomNum();
 void ReadString(char *buffer, int length);
 
 void PrintString(char *buffer);
+
+void PrintHash(char *buffer);
 
 /* Address space control operations: Exit, Exec, Execv, and Join */
 

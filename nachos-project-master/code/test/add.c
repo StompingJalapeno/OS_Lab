@@ -8,10 +8,12 @@
 #include "syscall.h"
 
 int main() {
-    int result;
-
-    result = Mul(42, 23);
-    PrintNum(result);
+    //int result;
+    //result = Mul(42, 23);
+    //PrintNum(result);
+    char sentence[] = " Hi There , this is Akilesh ";
+    PrintString(sentence);
+    PrintHash(sentence);
     Halt();
     /* not reached */
 }
