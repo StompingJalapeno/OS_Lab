@@ -10,7 +10,7 @@
 int main() {
     int result;
 
-    result = Add(42, 23);
+    result = Mul(42, 23);
     PrintNum(result);
     Halt();
     /* not reached */

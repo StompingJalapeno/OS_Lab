@@ -19,7 +19,7 @@
 void SysHalt() { kernel->interrupt->Halt(); }
 
 int SysAdd(int op1, int op2) { return op1 + op2; }
-
+int SysMul(int op1, int op2) { return op1 * op2; }
 int SysReadNum() {
     readUntilBlank();
 
